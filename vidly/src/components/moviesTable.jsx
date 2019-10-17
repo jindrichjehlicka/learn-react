@@ -1,18 +1,25 @@
 import React, { Component } from "react";
 import TableHeader from "./common/tableHeader";
-
+import TableBody from "./common/tableBody"
 
 class MoviesTable extends Component {
     columns = [
         { path: 'title', label: 'Title' },
         { path: 'genre.name', label: 'Genre' },
         { path: 'numberInStock', label: 'Stock' },
-        { path: 'dailyRentalRate ', label: 'rate' },
-        { key: 'delete' },
+        { path: 'dailyRentalRate', label: 'Rate' },
+        {
+            key: 'delete', content: movie => <button
+                onClick={() => this.props.onDelete(movie)}
+                className="btn btn-danger btn-sm"
+            >
+                Delete
+                        </button>
+        },
     ];
 
     render() {
-        const { movies, onDelete, sortColumn, onSort } = this.props;
+        const { movies, sortColumn, onSort } = this.props;
 
         return (
             <table className="table">
@@ -21,30 +28,14 @@ class MoviesTable extends Component {
                     sortColumn={sortColumn}
                     onSort={onSort}
                 />
-                <tbody>
-                    {movies.map(movie => (
-                        <tr key={movie._id}>
-                            <td>{movie.title}</td>
-                            <td>{movie.genre.name}</td>
-                            <td>{movie.numberInStock}</td>
-                            <td>{movie.dailyRentalRate}</td>
-                            <td>
-                                <button
-                                    onClick={() => onDelete(movie)}
-                                    className="btn btn-danger btn-sm"
-                                >
-                                    Delete
-                        </button>
-                            </td>
-                        </tr>
-                    ))}
-                </tbody>
+                <TableBody
+                    data={movies}
+                    columns={this.columns}
+                />
             </table>
         );
     }
 }
-
-
 
 
 export default MoviesTable;
